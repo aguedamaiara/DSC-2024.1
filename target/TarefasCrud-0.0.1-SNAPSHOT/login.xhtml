@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Login</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:messages globalOnly="true" layout="list" style="color: red;" />
+        <h:panelGrid columns="2">
+            <h:outputLabel for="email" value="Email:" />
+            <h:inputText id="email" value="#{loginBean.email}" required="true" />
+
+            <h:outputLabel for="senha" value="Senha:" />
+            <h:inputSecret id="senha" value="#{loginBean.senha}" required="true" />
+
+            <h:commandButton value="Login" action="#{loginBean.login}" />
+        </h:panelGrid>
+        <h:link value="Não é cadastrado? Cadastre aqui" outcome="cadastro?faces-redirect=true" />    </h:form>
+</h:body>
+</html>
