@@ -5,7 +5,7 @@ import java.util.List;
 
 import dsc.model.entidades.Tarefa;
 import dsc.model.entidades.Usuario;
-import dsc.model.sessionBeans.TarefaSessionBean;
+import dsc.model.sessionBeans.TarefaBean;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
@@ -15,16 +15,16 @@ import jakarta.inject.Named;
 
 @Named
 @RequestScoped
-public class TarefaBean implements Serializable {
+public class TarefaMB implements Serializable {
 	private Tarefa tarefa = new Tarefa();
 	private Tarefa tarefaSelecionada = new Tarefa();
 	private Integer tarefaIdParaEdicao;
 
 	@EJB
-	private TarefaSessionBean tarefaSessionBean;
+	private TarefaBean tarefaSessionBean;
 
 	@Inject
-	private LoginBean loginBean;
+	private LoginMB loginBean;
 
 	public String criarTarefa() {
 		tarefa.setResponsavel(loginBean.getUsuarioLogado());

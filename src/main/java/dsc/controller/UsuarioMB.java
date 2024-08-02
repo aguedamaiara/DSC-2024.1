@@ -3,21 +3,21 @@ package dsc.controller;
 import java.util.List;
 
 import dsc.model.entidades.Usuario;
-import dsc.model.sessionBeans.UsuarioSessionBean;
+import dsc.model.sessionBeans.UsuarioBean;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 
 @Named
 @RequestScoped
-public class UsuarioBean {
+public class UsuarioMB {
     @EJB
-    private UsuarioSessionBean usuarioSessionBean;
+    private UsuarioBean usuarioSessionBean;
 
     private Usuario usuario;
     private String id;
     
-    public UsuarioBean() {
+    public UsuarioMB() {
         this.usuario = new Usuario();  // Inicializa a propriedade usuario
     }
 

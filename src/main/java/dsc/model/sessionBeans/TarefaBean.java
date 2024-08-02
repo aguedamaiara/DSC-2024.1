@@ -9,7 +9,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
 @Stateless
-public class TarefaSessionBean {
+public class TarefaBean {
 
 	@Inject
 	private TarefaRepositorio tarefaRepositorio;

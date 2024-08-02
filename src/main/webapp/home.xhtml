@@ -11,12 +11,12 @@
 
 	<h2>
 		Bem-vindo,
-		<h:outputText value="#{loginBean.usuarioLogado.nome}" />
+		<h:outputText value="#{loginMB.usuarioLogado.nome}" />
 		!
 	</h2>
 
 	<h:form>
-		<h:commandButton value="Logout" action="#{loginBean.logout}" />
+		<h:commandButton value="Logout" action="#{loginMB.logout}" />
 	</h:form>
 	<br></br>
 
@@ -26,8 +26,8 @@
 	<h3>Lista de Tarefas</h3>
 	<h:form id="formTarefas">
 		<p:dataTable id="tabelaTarefas" var="tarefa"
-			value="#{tarefaBean.listarTarefas()}" editable="true">
-			<p:ajax event="cellEdit" listener="#{tarefaBean.onCellEdit}"
+			value="#{tarefaMB.listarTarefas()}" editable="true">
+			<p:ajax event="cellEdit" listener="#{tarefaMB.onCellEdit}"
 				update=":formTarefas:tabelaTarefas, :messages" />
 
 			<p:column headerText="Título">
@@ -69,11 +69,11 @@
 
 			<p:column headerText="Ações">
 				<p:commandButton icon="pi pi-trash"
-					action="#{tarefaBean.removerTarefa(tarefa)}"
+					action="#{tarefaMB.removerTarefa(tarefa)}"
 					update=":formTarefas:tabelaTarefas, :messages" />
 
 				<p:commandButton icon="pi pi-pencil"
-					action="#{tarefaBean.carregarTarefaParaEdicao(tarefa.id)}"
+					action="#{tarefaMB.carregarTarefaParaEdicao(tarefa.id)}"
 					update=":formEdicao, :messages"
 					oncomplete="PF('modalEdicao').show()" />
 			</p:column>
@@ -87,15 +87,15 @@
 		<h:form id="formCadastro">
 			<p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
 				<p:outputLabel for="titulo" value="Título:" />
-				<p:inputText id="titulo" value="#{tarefaBean.tarefa.titulo}"
+				<p:inputText id="titulo" value="#{tarefaMB.tarefa.titulo}"
 					required="true" />
 
 				<p:outputLabel for="descricao" value="Descrição:" />
 				<p:inputTextarea id="descricao"
-					value="#{tarefaBean.tarefa.descricao}" required="true" />
+					value="#{tarefaMB.tarefa.descricao}" required="true" />
 
 				<p:outputLabel for="status" value="Status:" />
-				<p:selectOneMenu id="status" value="#{tarefaBean.tarefa.status}">
+				<p:selectOneMenu id="status" value="#{tarefaMB.tarefa.status}">
 					<f:selectItem itemLabel="Selecione um status" itemValue="" />
 					<f:selectItem itemLabel="A Fazer" itemValue="A_FAZER" />
 					<f:selectItem itemLabel="Fazendo" itemValue="FAZENDO" />
@@ -103,7 +103,7 @@
 				</p:selectOneMenu>
 			</p:panelGrid>
 
-			<p:commandButton value="Salvar" action="#{tarefaBean.criarTarefa}"
+			<p:commandButton value="Salvar" action="#{tarefaMB.criarTarefa}"
 				update=":formTarefas:tabelaTarefas, :messages"
 				oncomplete="PF('modalCadastro').hide()" />
 		</h:form>
@@ -118,20 +118,20 @@
 				<!-- <p:outputLabel for="tituloEdicao" value="ID:" /> -->
 				<!-- required="true" -->
 				<h:inputHidden  id="IDEdicao"
-					value="#{tarefaBean.tarefaSelecionada.id}"  />
+					value="#{tarefaMB.tarefaSelecionada.id}"  />
 
 
 				<p:outputLabel for="tituloEdicao" value="Título:" />
 				<p:inputText id="tituloEdicao"
-					value="#{tarefaBean.tarefaSelecionada.titulo}" required="true" />
+					value="#{tarefaMB.tarefaSelecionada.titulo}" required="true" />
 
 				<p:outputLabel for="descricaoEdicao" value="Descrição:" />
 				<p:inputTextarea id="descricaoEdicao"
-					value="#{tarefaBean.tarefaSelecionada.descricao}" required="true" />
+					value="#{tarefaMB.tarefaSelecionada.descricao}" required="true" />
 
 				<p:outputLabel for="statusEdicao" value="Status:" />
 				<p:selectOneMenu id="statusEdicao"
-					value="#{tarefaBean.tarefaSelecionada.status}">
+					value="#{tarefaMB.tarefaSelecionada.status}">
 					<f:selectItem itemLabel="Selecione um status" itemValue="" />
 					<f:selectItem itemLabel="A Fazer" itemValue="A_FAZER" />
 					<f:selectItem itemLabel="Fazendo" itemValue="FAZENDO" />
@@ -140,7 +140,7 @@
 			</p:panelGrid>
 
 			<p:commandButton value="Salvar"
-				action="#{tarefaBean.atualizarTarefa}"
+				action="#{tarefaMB.atualizarTarefa}"
 				update=":formTarefas:tabelaTarefas, :messages"
 				oncomplete="PF('modalEdicao').hide()" />
 		</h:form>

@@ -7,7 +7,7 @@ import dsc.model.repositorios.UsuarioRepositorio;
 import jakarta.ejb.Stateless;
 
 @Stateless
-public class UsuarioSessionBean {
+public class UsuarioBean {
     private UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
 
     public void criarUsuario(Usuario usuario) {

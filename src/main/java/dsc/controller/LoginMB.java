@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import dsc.model.entidades.Usuario;
-import dsc.model.sessionBeans.UsuarioSessionBean;
+import dsc.model.sessionBeans.UsuarioBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
@@ -14,9 +14,9 @@ import jakarta.inject.Named;
 
 @Named
 @SessionScoped
-public class LoginBean implements Serializable{ 
+public class LoginMB implements Serializable{ 
     @EJB
-    private UsuarioSessionBean usuarioSessionBean;
+    private UsuarioBean usuarioSessionBean;
 
     private String email;
     private String senha;
