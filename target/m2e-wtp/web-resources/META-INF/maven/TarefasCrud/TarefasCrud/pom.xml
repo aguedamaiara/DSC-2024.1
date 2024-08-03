@@ -22,6 +22,11 @@
 			<version>13.0.0</version>
 			<classifier>jakarta</classifier>
 		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>5.15.3</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

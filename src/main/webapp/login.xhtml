@@ -1,22 +1,122 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <title>Login</title>
+	<title>Login</title>
+	<style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f2f2f2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.login-form {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	width: 300px;
+}
+
+.login-form h2 {
+	margin-top: 0;
+	margin-bottom: 15px;
+	font-size: 24px;
+	color: #333;
+	text-align: center; /* Centraliza o título */
+}
+
+.login-form .ui-panelgrid {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.login-form .ui-outputlabel {
+	font-size: 14px;
+	color: #333;
+}
+
+.login-form .ui-inputtext, .login-form .ui-password {
+	width: calc(100% - 22px); /* Ajuste para o padding e border */
+	margin-bottom: 10px;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.login-button {
+	background-color: #007BFF; /* Cor azul */
+	color: white;
+	border: none;
+	padding: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	text-align: center;
+	display: block;
+	margin: 0 auto; /* Centraliza o botão */
+	border-radius: 4px;
+}
+
+.login-button:hover {
+	background-color: #0056b3; /* Cor azul mais escura */
+}
+
+.login-form .ui-link {
+	display: block;
+	margin-top: 10px;
+	text-align: center;
+	color: #007BFF;
+	text-decoration: none;
+}
+
+.login-form .ui-link:hover {
+	text-decoration: underline;
+}
+
+.error-messages {
+	color: red;
+	margin-bottom: 10px;
+}
+
+.meu-campo-input {
+	width: 100%;
+	height: 30px;
+	padding: 15px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+</style>
 </h:head>
 <h:body>
-    <h:form>
-        <h:messages globalOnly="true" layout="list" style="color: red;" />
-        <h:panelGrid columns="2">
-            <h:outputLabel for="email" value="Email:" />
-            <h:inputText id="email" value="#{loginMB.email}" required="true" />
+	<div class="login-form">
+		<h2>Login</h2>
+		<h:form>
+			<h:messages globalOnly="true" layout="list"
+				styleClass="error-messages" />
+			<h:panelGrid columns="2" styleClass="login-grid">
+				<h:outputLabel for="email" value="Email:" />
+				<h:inputText id="email" value="#{loginMB.email}" required="true"
+					styleClass="meu-campo-input" />
 
-            <h:outputLabel for="senha" value="Senha:" />
-            <h:inputSecret id="senha" value="#{loginMB.senha}" required="true" />
+				<h:outputLabel for="senha" value="Senha:" />
+				<h:inputSecret id="senha" value="#{loginMB.senha}" required="true"
+					styleClass="meu-campo-input" />
+			</h:panelGrid>
+			<div style="height: 20px;"></div>
 
-            <h:commandButton value="Login" action="#{loginMB.login}" />
-        </h:panelGrid>
-        <h:link value="Não é cadastrado? Cadastre aqui" outcome="cadastro?faces-redirect=true" />    </h:form>
+			<h:commandButton value="Login" action="#{loginMB.login}"
+				styleClass="login-button" />
+			<h:link value="Não é cadastrado? Cadastre aqui"
+				outcome="cadastro?faces-redirect=true" />
+		</h:form>
+	</div>
 </h:body>
 </html>
