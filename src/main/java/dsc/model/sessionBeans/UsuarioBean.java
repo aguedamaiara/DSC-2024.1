@@ -18,10 +18,10 @@ public class UsuarioBean {
         usuarioRepositorio.atualizarUsuario(usuario);
     }
 
-    public void removerUsuario(String id) {
-        usuarioRepositorio.removerUsuario(id);
+    public void removerUsuario(Usuario usuario) {
+        usuarioRepositorio.removerUsuario(usuario.getId());
     }
-
+    
     public Usuario buscarUsuarioPorId(String id) {
         return usuarioRepositorio.buscarUsuarioPorId(id);
     }

@@ -24,8 +24,15 @@ public class UsuarioRepositorio {
         }
     }
 
+    
     public void removerUsuario(String id) {
-        usuarios.removeIf(usuario -> usuario.getId().equals(id));
+        Optional<Usuario> usuarioOptional = usuarios.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst();
+
+        if (usuarioOptional.isPresent()) {
+            usuarios.remove(usuarioOptional.get());
+        }
     }
 
     public Usuario buscarUsuarioPorId(String id) {

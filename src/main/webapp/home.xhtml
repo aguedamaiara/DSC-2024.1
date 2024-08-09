@@ -4,24 +4,38 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
+
 	<title>Home</title>
+	<style>
+.button-grid {
+	margin: 10px;
+}
+
+.button-grid .ui-button {
+	margin: 5px;
+}
+</style>
+	<h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <h:body>
 	<p:growl id="messages" showDetail="true" />
 
-	<h2>
-		Bem-vindo,
-		<h:outputText value="#{loginMB.usuarioLogado.nome}" />
-		!
-	</h2>
+	<div class="header">
+		<h2>
+			Bem-vindo,
+			<h:outputText value="#{loginMB.usuarioLogado.nome}" />
+			!
+		</h2>
+	</div>
 
-	<h:form>
-		<h:commandButton value="Logout" action="#{loginMB.logout}" />
-	</h:form>
-	<br></br>
-
-	<p:commandButton value="Adicionar Tarefa"
-		onclick="PF('modalCadastro').show()" styleClass="ui-button-primary" />
+	<div class="content">
+		<p:panelGrid columns="2" styleClass="button-grid">
+			<p:commandButton value="Logout" action="#{loginMB.logout}"
+				styleClass="ui-button-secondary" />
+			<p:commandButton value="Adicionar Tarefa"
+				onclick="PF('modalCadastro').show()" styleClass="ui-button-primary" />
+		</p:panelGrid>
+	</div>
 
 	<h3>Lista de Tarefas</h3>
 	<h:form id="formTarefas">
@@ -91,8 +105,8 @@
 					required="true" />
 
 				<p:outputLabel for="descricao" value="Descrição:" />
-				<p:inputTextarea id="descricao"
-					value="#{tarefaMB.tarefa.descricao}" required="true" />
+				<p:inputTextarea id="descricao" value="#{tarefaMB.tarefa.descricao}"
+					required="true" />
 
 				<p:outputLabel for="status" value="Status:" />
 				<p:selectOneMenu id="status" value="#{tarefaMB.tarefa.status}">
@@ -117,8 +131,8 @@
 			<p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
 				<!-- <p:outputLabel for="tituloEdicao" value="ID:" /> -->
 				<!-- required="true" -->
-				<h:inputHidden  id="IDEdicao"
-					value="#{tarefaMB.tarefaSelecionada.id}"  />
+				<h:inputHidden id="IDEdicao"
+					value="#{tarefaMB.tarefaSelecionada.id}" />
 
 
 				<p:outputLabel for="tituloEdicao" value="Título:" />
@@ -139,7 +153,7 @@
 				</p:selectOneMenu>
 			</p:panelGrid>
 
-			<p:commandButton value="Salvar"
+			<p:commandButton value="Salvar" 
 				action="#{tarefaMB.atualizarTarefa}"
 				update=":formTarefas:tabelaTarefas, :messages"
 				oncomplete="PF('modalEdicao').hide()" />
