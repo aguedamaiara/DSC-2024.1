@@ -1,7 +1,8 @@
 package dsc.model.entidades;
 
 public enum StatusTarefa {
-	A_FAZER,
-	FAZENDO, 
-	FEITO;
+    SELECIONE,  // Valor padrão para "Selecione um status"
+    A_FAZER,
+    FAZENDO, 
+    FEITO;
 }

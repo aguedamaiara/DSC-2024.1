@@ -22,32 +22,22 @@ public class UsuarioMB {
     private Usuario usuarioSelecionado = new Usuario();
     
     public UsuarioMB() {
-        this.usuario = new Usuario();  // Inicializa a propriedade usuario
+        this.usuario = new Usuario();  
     }
 
     public String criarUsuario() {
-        usuarioSessionBean.criarUsuario(usuario);
-        // Redirecionar para a página de login com mensagem de sucesso
-        return "login?faces-redirect=true&msg=cadastroSucesso";
+        try {
+            usuarioSessionBean.criarUsuario(usuario);
+            usuario = new Usuario();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário criado com sucesso!", null));
+        } catch (IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            return null;
+        }
+        return "home?faces-redirect=true";
     }
 
-	/*
-	 * public String atualizarUsuario() {
-	 * usuarioSessionBean.atualizarUsuario(usuario); // Redirecionar para a lista de
-	 * usuários ou página inicial return "usuarios?faces-redirect=true"; }
-	 */
-    
-	/*
-	 * public String atualizarUsuario() { Usuario existingUser =
-	 * buscarUsuarioPorId(usuario.getId()); if (existingUser != null) {
-	 * existingUser.setNome(usuario.getNome());
-	 * existingUser.setEmail(usuario.getEmail());
-	 * existingUser.setSenha(usuario.getSenha());
-	 * usuarioSessionBean.atualizarUsuario(existingUser); } return
-	 * "usuarios?faces-redirect=true"; }
-	 */
-    
-    // Método para carregar o usuário selecionado para edição
+
     public String carregarUsuarioParaEdicao(String id) {
         this.usuarioSelecionado = usuarioSessionBean.buscarUsuarioPorId(id);
         if (this.usuarioSelecionado != null) {
@@ -59,7 +49,6 @@ public class UsuarioMB {
         }
     }
 
-    // Método para atualizar o usuário
     public String atualizarUsuario() {
         if (usuarioSelecionado != null && usuarioSelecionado.getId() != null) {
             usuarioSessionBean.atualizarUsuario(usuarioSelecionado);
@@ -72,15 +61,6 @@ public class UsuarioMB {
             return "usuarios?faces-redirect=true";
         }
     }
-
-    
-    
-	/*
-	 * public String atualizarUsuario() { usuario.setNome(usuario.getNome());
-	 * usuario.setEmail(usuario.getEmail()); usuario.setSenha(usuario.getSenha());
-	 * usuarioSessionBean.atualizarUsuario(usuario); return
-	 * "usuarios?faces-redirect=true"; }
-	 */
     
     public void removerUsuario(String id) {
         Usuario usuario = buscarUsuarioPorId(id);

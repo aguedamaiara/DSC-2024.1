@@ -8,7 +8,7 @@ public class Tarefa {
 	private String descricao;
 	private StatusTarefa status; // Enum: A_FAZER, FAZENDO, FEITO
 
-	private Usuario responsavel; // Responsável pela Tarefa
+	private Usuario responsavel;
 
 	// Getters e Setters
 	public Integer getId() {

@@ -110,7 +110,7 @@
 
 				<p:outputLabel for="status" value="Status:" />
 				<p:selectOneMenu id="status" value="#{tarefaMB.tarefa.status}">
-					<f:selectItem itemLabel="Selecione um status" itemValue="" />
+					<f:selectItem itemLabel="Selecione um status" itemValue="#{null}" />
 					<f:selectItem itemLabel="A Fazer" itemValue="A_FAZER" />
 					<f:selectItem itemLabel="Fazendo" itemValue="FAZENDO" />
 					<f:selectItem itemLabel="Feito" itemValue="FEITO" />
@@ -146,7 +146,7 @@
 				<p:outputLabel for="statusEdicao" value="Status:" />
 				<p:selectOneMenu id="statusEdicao"
 					value="#{tarefaMB.tarefaSelecionada.status}">
-					<f:selectItem itemLabel="Selecione um status" itemValue="" />
+					<f:selectItem itemLabel="Selecione um status" itemValue="#{null}" />
 					<f:selectItem itemLabel="A Fazer" itemValue="A_FAZER" />
 					<f:selectItem itemLabel="Fazendo" itemValue="FAZENDO" />
 					<f:selectItem itemLabel="Feito" itemValue="FEITO" />

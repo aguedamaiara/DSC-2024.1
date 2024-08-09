@@ -12,6 +12,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.validation.ValidationException;
 
 @Named
 @RequestScoped
@@ -27,10 +28,18 @@ public class TarefaMB implements Serializable {
 	private LoginMB loginBean;
 
 	public String criarTarefa() {
-		tarefa.setResponsavel(loginBean.getUsuarioLogado());
-		tarefaSessionBean.adicionarTarefa(tarefa);
-		tarefa = new Tarefa();
-		return "home?faces-redirect=true";
+	    try {
+	        tarefa.setResponsavel(loginBean.getUsuarioLogado());
+	        tarefaSessionBean.adicionarTarefa(tarefa);
+	        tarefa = new Tarefa();
+	        FacesContext.getCurrentInstance().addMessage(null,
+	            new FacesMessage(FacesMessage.SEVERITY_INFO, "Tarefa criada com sucesso!", null));
+	        return "home?faces-redirect=true";
+	    } catch (IllegalArgumentException e) {
+	        FacesContext.getCurrentInstance().addMessage(null,
+	            new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+	        return null;
+	    }
 	}
 
 	public List<Tarefa> listarTarefas() {
@@ -56,22 +65,26 @@ public class TarefaMB implements Serializable {
 	}
 
 	public String atualizarTarefa() {
-		if (tarefaSelecionada != null && tarefaSelecionada.getId() != null) {
-			tarefaSelecionada.setResponsavel(loginBean.getUsuarioLogado());
-			tarefaSessionBean.atualizarTarefa(tarefaSelecionada);
-			tarefaSelecionada = new Tarefa();
-			  FacesContext.getCurrentInstance().addMessage(null,
-			            new FacesMessage(FacesMessage.SEVERITY_INFO, "Tarefa atualizada com sucesso!", null));
-
-			        return "home?faces-redirect=true";
-			    }
-
-			    FacesContext.getCurrentInstance().addMessage(null,
-			        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao atualizar tarefa. Tarefa selecionada inválida.", null));
-
-			    return "home?faces-redirect=true";
-			}
-
+	    try {
+	        if (tarefaSelecionada != null && tarefaSelecionada.getId() != null) {
+	            tarefaSelecionada.setResponsavel(loginBean.getUsuarioLogado());
+	            tarefaSessionBean.atualizarTarefa(tarefaSelecionada);
+	            tarefaSelecionada = new Tarefa();
+	            FacesContext.getCurrentInstance().addMessage(null,
+	                new FacesMessage(FacesMessage.SEVERITY_INFO, "Tarefa atualizada com sucesso!", null));
+	            return "home?faces-redirect=true";
+	        } else {
+	            FacesContext.getCurrentInstance().addMessage(null,
+	                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao atualizar tarefa. Tarefa selecionada inválida.", null));
+	            return "home?faces-redirect=true";
+	        }
+	    } catch (IllegalArgumentException e) {
+	        FacesContext.getCurrentInstance().addMessage(null,
+	            new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+	        return null;
+	    }
+	}
+	
 	// Getters e Setters
 	public Tarefa getTarefa() {
 		return tarefa;
