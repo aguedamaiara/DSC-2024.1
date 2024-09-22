@@ -4,36 +4,30 @@ import java.util.List;
 
 import dsc.model.entidades.Usuario;
 import dsc.model.repositorios.UsuarioRepositorio;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 
 @Stateless
 public class UsuarioBean {
-    private UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
+	
+    @EJB
+	private UsuarioRepositorio urep;
 
-    public void criarUsuario(Usuario usuario) {
+    public Usuario criarUsuario(Usuario usuario) {
         validarUsuario(usuario);
-        usuarioRepositorio.adicionarUsuario(usuario);
-    }
-
-    public void atualizarUsuario(Usuario usuario) {
-        validarUsuario(usuario);
-        usuarioRepositorio.atualizarUsuario(usuario);
-    }
-
-    public void removerUsuario(Usuario usuario) {
-        usuarioRepositorio.removerUsuario(usuario.getId());
+      return this.urep.adicionarUsuario(usuario);
     }
     
     public Usuario buscarUsuarioPorId(String id) {
-        return usuarioRepositorio.buscarUsuarioPorId(id);
+        return urep.buscarUsuarioPorId(id);
     }
 
     public Usuario buscarUsuarioPorEmail(String email) {
-        return usuarioRepositorio.buscarUsuarioPorEmail(email);
+        return urep.buscarUsuarioPorEmail(email);
     }
 
     public List<Usuario> listarUsuarios() {
-        return usuarioRepositorio.listarUsuarios();
+        return urep.listarUsuarios();
     }
     
     private void validarUsuario(Usuario usuario) {

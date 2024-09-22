@@ -2,20 +2,54 @@ package dsc.model.entidades;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Tarefa {
-	private Integer id;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
+
+	@Column(nullable = false)
 	private String titulo;
+
+	@Column(nullable = false)
 	private String descricao;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private StatusTarefa status; // Enum: A_FAZER, FAZENDO, FEITO
 
+	@ManyToOne
+	@JoinColumn(name = "responsavel_id", nullable = false)
 	private Usuario responsavel;
 
+	public Tarefa() { }
+	
+	public Tarefa( String titulo, String descricao, StatusTarefa status, Usuario responsavel) {
+		super();
+		// String id, this.id = id;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.status = status;
+		this.responsavel = responsavel;
+	}
+
 	// Getters e Setters
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -42,6 +76,14 @@ public class Tarefa {
 	public void setStatus(StatusTarefa status) {
 		this.status = status;
 	}
+	
+	public Usuario getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Usuario responsavel) {
+		this.responsavel = responsavel;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -58,11 +100,4 @@ public class Tarefa {
 		return Objects.hash(id);
 	}
 
-	public Usuario getResponsavel() {
-		return responsavel;
-	}
-
-	public void setResponsavel(Usuario responsavel) {
-		this.responsavel = responsavel;
-	}
 }

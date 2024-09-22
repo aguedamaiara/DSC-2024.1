@@ -83,7 +83,7 @@
 
 			<p:column headerText="Ações">
 				<p:commandButton icon="pi pi-trash"
-					action="#{tarefaMB.removerTarefa(tarefa)}"
+					action="#{tarefaMB.removerTarefa(tarefa.id)}"
 					update=":formTarefas:tabelaTarefas, :messages" />
 
 				<p:commandButton icon="pi pi-pencil"

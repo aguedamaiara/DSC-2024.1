@@ -1,55 +1,54 @@
 package dsc.model.repositorios;
 
 
-import dsc.model.entidades.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import dsc.model.entidades.Usuario;
+import jakarta.ejb.Singleton;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+
+@Singleton
 public class UsuarioRepositorio {
-    private List<Usuario> usuarios = new ArrayList<>();
-    private int idCounter = 1;
-
-    public void adicionarUsuario(Usuario usuario) {
-        usuario.setId(String.valueOf(idCounter++));
-        usuarios.add(usuario);
-    }
-
-    public void atualizarUsuario(Usuario usuario) {
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getId().equals(usuario.getId())) {
-                usuarios.set(i, usuario);
-                return;
-            }
-        }
-    }
-
-    
-    public void removerUsuario(String id) {
-        Optional<Usuario> usuarioOptional = usuarios.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst();
-
-        if (usuarioOptional.isPresent()) {
-            usuarios.remove(usuarioOptional.get());
-        }
-    }
+	
+	@PersistenceContext(name = "corporativo")
+    private EntityManager entityManager;
+	
+	public Usuario adicionarUsuario(Usuario usuario) {
+	    this.entityManager.persist(usuario);
+	    this.entityManager.flush();
+	    return usuario;
+	}
 
     public Usuario buscarUsuarioPorId(String id) {
-        return usuarios.stream()
-                       .filter(usuario -> usuario.getId().equals(id))
-                       .findFirst()
-                       .orElse(null);
+        return entityManager.find(Usuario.class, id);
     }
 
     public Usuario buscarUsuarioPorEmail(String email) {
-        return usuarios.stream()
-                       .filter(usuario -> usuario.getEmail().equals(email))
-                       .findFirst()
-                       .orElse(null);
+        return entityManager.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
+                .setParameter("email", email)
+                .getSingleResult();
     }
 
     public List<Usuario> listarUsuarios() {
-        return new ArrayList<>(usuarios);
+        return entityManager.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
     }
+    
+    public List<Usuario> findAll(){
+    	Query q = entityManager.createQuery("from Usuario U", Usuario.class);
+    	return q.getResultList();
+    }
+    
+//   public Usuario atualizarUsuario(Usuario usuario) {
+//      return this.entityManager.merge(usuario);
+//  }
+//
+//  public void removerUsuario(String id) {
+//      Usuario usuario = entityManager.find(Usuario.class, id);
+//      if (usuario != null) {
+//          entityManager.remove(usuario);
+//      }
+//  }
+
 }

@@ -1,56 +1,48 @@
 package dsc.model.repositorios;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import dsc.model.entidades.Tarefa;
 import dsc.model.entidades.Usuario;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 @Stateless
 public class TarefaRepositorio {
-	private Map<Usuario, List<Tarefa>> tarefasPorUsuario = new HashMap<>();
-    private AtomicInteger idGenerator = new AtomicInteger(1);
 
-	
-	public void adicionarTarefa(Tarefa tarefa) {
-		
-		 if (tarefa.getId() == null) {
-	            tarefa.setId(idGenerator.getAndIncrement());
+	@PersistenceContext(name = "corporativo")
+	private EntityManager entityManager;
+
+	public Tarefa adicionarTarefa(Tarefa tarefa) {
+		entityManager.persist(tarefa); // Deixe o JPA persistir e gerar o ID automaticamente
+		return tarefa;
+	}
+
+	public List<Tarefa> listarTarefasPorUsuario(Usuario usuario) {
+		return entityManager.createQuery("SELECT t FROM Tarefa t WHERE t.responsavel = :responsavel", Tarefa.class)
+				.setParameter("responsavel", usuario).getResultList();
+	}
+
+	// Buscar Tarefa por ID
+	public Tarefa buscarTarefaPorId(String id) {
+		return entityManager.find(Tarefa.class, id);
+	}
+
+	// Listar todas as Tarefas
+	public List<Tarefa> listarTodasTarefas() {
+		return entityManager.createQuery("SELECT t FROM Tarefa t", Tarefa.class).getResultList();
+	}
+
+	  public void removerTarefa(String id) {
+	        Tarefa tarefa = buscarTarefaPorId(id);
+	        if (tarefa != null) {
+	            entityManager.remove(tarefa);
 	        }
-		 
-		Usuario responsavel = tarefa.getResponsavel();
-		if (!tarefasPorUsuario.containsKey(responsavel)) {
-			tarefasPorUsuario.put(responsavel, new ArrayList<>());
-		}
-		tarefasPorUsuario.get(responsavel).add(tarefa);
-	}
+	    }
 
-	public List<Tarefa> listarTarefas(Usuario usuario) {
-		return tarefasPorUsuario.getOrDefault(usuario, new ArrayList<>());
+	// Atualizar uma tarefa existente
+	public Tarefa atualizarTarefa(Tarefa tarefa) {
+		return entityManager.merge(tarefa);
 	}
-
-	public void removerTarefa(Tarefa tarefa) {
-		Usuario responsavel = tarefa.getResponsavel();
-		if (tarefasPorUsuario.containsKey(responsavel)) {
-			List<Tarefa> tarefasDoUsuario = tarefasPorUsuario.get(responsavel);
-			tarefasDoUsuario.remove(tarefa);
-		}
-	}
-	
-	public void atualizarTarefa(Tarefa tarefa) {
-        Usuario responsavel = tarefa.getResponsavel();
-        if (tarefasPorUsuario.containsKey(responsavel)) {
-            List<Tarefa> tarefasDoUsuario = tarefasPorUsuario.get(responsavel);
-            for (int i = 0; i < tarefasDoUsuario.size(); i++) {
-                if (tarefasDoUsuario.get(i).getId().equals(tarefa.getId())) {
-                    tarefasDoUsuario.set(i, tarefa);
-                    break;
-                }
-            }
-        }
-    }
 }
