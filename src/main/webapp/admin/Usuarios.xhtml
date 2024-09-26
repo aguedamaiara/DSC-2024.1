@@ -20,10 +20,18 @@
 
 	<div class="header">
 		<h2>Gerenciamento de Usuários</h2>
+		<h2>
+			Bem-vindo,
+			<h:outputText value="#{loginMB.usuarioLogado.nome}" />
+			!
+		</h2>
 	</div>
 
 	<div class="content">
 		<p:panelGrid columns="2" styleClass="button-grid">
+			<p:commandButton value="Logout" action="#{loginMB.logout}"
+				styleClass="ui-button-secondary"/>
+				
 			<p:commandButton value="Adicionar Usuário"
 				onclick="PF('modalCadastro').show()" styleClass="ui-button-primary" />
 		</p:panelGrid>
@@ -98,38 +106,39 @@
 	</p:dialog>
 
 	<!-- Modal para Edição de Usuário -->
-<p:dialog id="modalEdicao" widgetVar="modalEdicao"
-    header="Editar Usuário" modal="true" showEffect="fade"
-    hideEffect="fade">
+	<p:dialog id="modalEdicao" widgetVar="modalEdicao"
+		header="Editar Usuário" modal="true" showEffect="fade"
+		hideEffect="fade">
 
-    <h:form id="formEdicao">
-        <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
-            <!-- ID oculto -->
-            <h:inputHidden id="IDEdicao" value="#{usuarioMB.usuarioSelecionado.id}" />
+		<h:form id="formEdicao">
+			<p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+				<!-- ID oculto -->
+				<h:inputHidden id="IDEdicao"
+					value="#{usuarioMB.usuarioSelecionado.id}" />
 
-            <!-- Nome -->
-            <p:outputLabel for="nomeEdicao" value="Nome:" />
-            <p:inputText id="nomeEdicao" value="#{usuarioMB.usuarioSelecionado.nome}"
-                required="true" />
+				<!-- Nome -->
+				<p:outputLabel for="nomeEdicao" value="Nome:" />
+				<p:inputText id="nomeEdicao"
+					value="#{usuarioMB.usuarioSelecionado.nome}" required="true" />
 
-            <!-- Email -->
-            <p:outputLabel for="emailEdicao" value="Email:" />
-            <p:inputText id="emailEdicao" value="#{usuarioMB.usuarioSelecionado.email}"
-                required="true" />
+				<!-- Email -->
+				<p:outputLabel for="emailEdicao" value="Email:" />
+				<p:inputText id="emailEdicao"
+					value="#{usuarioMB.usuarioSelecionado.email}" required="true" />
 
-            <!-- Senha -->
-            <p:outputLabel for="senhaEdicao" value="Senha:" />
-            <p:password id="senhaEdicao" value="#{usuarioMB.usuarioSelecionado.senha}"
-                required="true" />
-        </p:panelGrid>
+				<!-- Senha -->
+				<p:outputLabel for="senhaEdicao" value="Senha:" />
+				<p:password id="senhaEdicao"
+					value="#{usuarioMB.usuarioSelecionado.senha}" required="true" />
+			</p:panelGrid>
 
-        <p:commandButton value="Salvar"
-            action="#{usuarioMB.atualizarUsuario}"
-            update=":formUsuarios:tabelaUsuarios, :messages"
-            oncomplete="PF('modalEdicao').hide()" />
-    </h:form>
-</p:dialog>
-	
+			<p:commandButton value="Salvar"
+				action="#{usuarioMB.atualizarUsuario}"
+				update=":formUsuarios:tabelaUsuarios, :messages"
+				oncomplete="PF('modalEdicao').hide()" />
+		</h:form>
+	</p:dialog>
+
 
 </h:body>
 </html>

@@ -2,19 +2,26 @@ package dsc.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.Principal;
+import java.util.Map;
 
 import dsc.model.entidades.Usuario;
 import dsc.model.sessionBeans.UsuarioBean;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.DeclareRoles;
 import jakarta.ejb.EJB;
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Named
-@SessionScoped
-public class LoginMB implements Serializable{ 
+@ApplicationScoped
+@DeclareRoles({ "user", "admin" })
+public class LoginMB { 
     @EJB
     private UsuarioBean usuarioSessionBean;
 
@@ -22,35 +29,56 @@ public class LoginMB implements Serializable{
     private String senha;
     private Usuario usuarioLogado;
 
-    @PostConstruct
-    public void init() {
-        if (usuarioLogado == null) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public String login() {
-        Usuario usuario = usuarioSessionBean.buscarUsuarioPorEmail(email);
-        if (usuario != null && usuario.getSenha().equals(senha)) {
-            usuarioLogado = usuario;
-            return "home?faces-redirect=true";
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email ou senha incorretos", "Erro de Login"));
-            return "login";
+    	
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        try {
+            request.login(email, senha);
+        } catch (ServletException e) {             
         }
+
+        Principal principal = request.getUserPrincipal();
+        String userEmail = principal.getName();
+        this.usuarioLogado = usuarioSessionBean.buscarUsuarioPorEmail(userEmail);
+
+            ExternalContext externalContext = 
+            		FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = 
+            		externalContext.getSessionMap();
+            sessionMap.put("usuarioLogado", this.usuarioLogado);
+
+            if (request.isUserInRole("user")) {
+                return "/user/home.xhtml?faces-redirect=true";
+            } else if (request.isUserInRole("admin")) {
+                return "/admin/Usuarios.xhtml?faces-redirect=true";
+            } else {
+                return "error.xhtml";
+            }
     }
 
-    public String logout() {
-        usuarioLogado = null;
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "login?faces-redirect=true";
-    }
+    public String logout() throws IOException {
+    	FacesContext context = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = context.getExternalContext();
+		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+		
+		try {
+			request.logout();
 
+			// Invalida a sessão para garantir que todos os dados da sessão sejam removidos
+			externalContext.invalidateSession();
+			
+			// Força o recarregamento da página atual
+			externalContext.redirect(request.getRequestURI());
+		} catch (ServletException e) {
+			return "error.xhtml?faces-redirect=true";
+		}
+
+		return null;
+	}
+
+    
     // Getters e Setters
     public String getEmail() {
         return email;
@@ -70,5 +98,9 @@ public class LoginMB implements Serializable{
 
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
+    }
+    
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
     }
 }

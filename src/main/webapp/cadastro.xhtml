@@ -113,6 +113,13 @@ body {
 				<h:outputLabel for="senha" value="Senha:" />
 				<h:inputSecret id="senha" value="#{usuarioMB.usuario.senha}"
 					required="true" styleClass="meu-campo-input" />
+					
+				<h:outputLabel value="Perfil " />
+				<h:selectOneRadio value="#{usuarioMB.perfil}" required="true"
+					requiredMessage="Usuario precisa ter perfil" id="niveis">
+					<f:selectItem itemLabel="Admin" itemValue="admin" />
+					<f:selectItem itemLabel="User" itemValue="user" />
+				</h:selectOneRadio>
 			</h:panelGrid>
 			<div style="height: 20px;"></div>
 

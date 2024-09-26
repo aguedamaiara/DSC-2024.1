@@ -4,6 +4,7 @@ package dsc.model.repositorios;
 import java.util.List;
 
 import dsc.model.entidades.Usuario;
+import dsc.model.entidades.UsuarioPerfil;
 import jakarta.ejb.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -39,6 +40,10 @@ public class UsuarioRepositorio {
     	Query q = entityManager.createQuery("from Usuario U", Usuario.class);
     	return q.getResultList();
     }
+    
+    public void saveUsuarioPerfil(UsuarioPerfil perfil) {
+		this.entityManager.persist(perfil);
+	}
     
 //   public Usuario atualizarUsuario(Usuario usuario) {
 //      return this.entityManager.merge(usuario);
