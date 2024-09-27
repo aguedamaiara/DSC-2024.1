@@ -30,33 +30,42 @@ public class LoginMB {
     private Usuario usuarioLogado;
 
     public String login() {
-    	
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
             request.login(email, senha);
-        } catch (ServletException e) {             
+        } catch (ServletException e) {
+            // Adiciona uma mensagem de erro ao FacesContext
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "Login falhou: " + e.getMessage(), "Verifique seu e-mail e senha."));
+            return "login.xhtml"; // Redireciona para a página de login
         }
 
         Principal principal = request.getUserPrincipal();
+        if (principal == null) {
+            // Se principal for nulo, significa que o login falhou
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "Login falhou", "Usuário não encontrado."));
+            return "login.xhtml"; // Redireciona para a página de login
+        }
+
         String userEmail = principal.getName();
         this.usuarioLogado = usuarioSessionBean.buscarUsuarioPorEmail(userEmail);
 
-            ExternalContext externalContext = 
-            		FacesContext.getCurrentInstance().getExternalContext();
-            Map<String, Object> sessionMap = 
-            		externalContext.getSessionMap();
-            sessionMap.put("usuarioLogado", this.usuarioLogado);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("usuarioLogado", this.usuarioLogado);
 
-            if (request.isUserInRole("user")) {
-                return "/user/home.xhtml?faces-redirect=true";
-            } else if (request.isUserInRole("admin")) {
-                return "/admin/Usuarios.xhtml?faces-redirect=true";
-            } else {
-                return "error.xhtml";
-            }
+        if (request.isUserInRole("user")) {
+            return "/user/home.xhtml?faces-redirect=true";
+        } else if (request.isUserInRole("admin")) {
+            return "/admin/Usuarios.xhtml?faces-redirect=true";
+        } else {
+            return "error.xhtml";
+        }
     }
+
 
     public String logout() throws IOException {
     	FacesContext context = FacesContext.getCurrentInstance();
@@ -71,6 +80,7 @@ public class LoginMB {
 			
 			// Força o recarregamento da página atual
 			externalContext.redirect(request.getRequestURI());
+	
 		} catch (ServletException e) {
 			return "error.xhtml?faces-redirect=true";
 		}

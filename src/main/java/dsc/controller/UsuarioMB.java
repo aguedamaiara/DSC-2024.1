@@ -65,25 +65,31 @@ public class UsuarioMB implements Serializable {
 		}
 	}
 
-//    public String atualizarUsuario() {
-//        if (usuarioSelecionado != null && usuarioSelecionado.getId() != null) {
-//            usuarioSessionBean.atualizarUsuario(usuarioSelecionado);
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário atualizado com sucesso!", null));
-//            return "usuarios?faces-redirect=true";
-//        } else {
-//            FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao atualizar usuário. Usuário selecionado inválido.", null));
-//            return "usuarios?faces-redirect=true";
-//        }
-//    }
-//    
-//    public void removerUsuario(String id) {
-//        Usuario usuario = buscarUsuarioPorId(id);
-//        if (usuario != null) {
-//            usuarioSessionBean.removerUsuario(usuario);
-//        }
-//    }
+	public String atualizarUsuario() {
+		try {
+			usuarioSessionBean.atualizarUsuario(usuarioSelecionado);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário atualizado com sucesso!", null));
+			return "usuarios?faces-redirect=true"; // Redireciona para a lista de usuários
+		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Erro ao atualizar usuário: " + e.getMessage(), null));
+			return null;
+		}
+	}
+
+	public String removerUsuario(String id) {
+		try {
+			usuarioSessionBean.removerUsuario(id);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário removido com sucesso!", null));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao remover usuário: " + e.getMessage(), null));
+			return null;
+		}
+		return "usuarios?faces-redirect=true"; // Redireciona para a lista de usuários
+	}
 
 	public Usuario buscarUsuario() {
 		usuario = usuarioSessionBean.buscarUsuarioPorId(id);

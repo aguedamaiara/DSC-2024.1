@@ -14,19 +14,18 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
-	
+
 	@Column(nullable = false)
 	private String nome;
-	
-	@Column(unique = true, nullable = false)
+
+	@Column(unique = true, length = 255)
 	private String email;
-	
+
 	@Column(nullable = false)
 	private String senha;
 
-	
-	public Usuario() {}
-	
+	public Usuario() {
+	}
 
 	public Usuario(String id, String nome, String email, String senha) {
 		super();
@@ -35,8 +34,6 @@ public class Usuario {
 		this.email = email;
 		this.senha = senha;
 	}
-
-
 
 	// getters e setters
 	public String getId() {
@@ -70,12 +67,11 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(email, id, nome, senha);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

@@ -97,6 +97,14 @@
 				<p:outputLabel for="senha" value="Senha:" />
 				<p:password id="senha" value="#{usuarioMB.usuario.senha}"
 					required="true" />
+					
+							
+				<h:outputLabel value="Perfil " />
+				<h:selectOneRadio value="#{usuarioMB.perfil}" required="true"
+					requiredMessage="Usuario precisa ter perfil" id="niveis">
+					<f:selectItem itemLabel="Admin" itemValue="admin" />
+					<f:selectItem itemLabel="User" itemValue="user" />
+				</h:selectOneRadio>
 			</p:panelGrid>
 
 			<p:commandButton value="Salvar" action="#{usuarioMB.criarUsuario}"

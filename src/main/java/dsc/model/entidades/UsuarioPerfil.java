@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 public class UsuarioPerfil {
 
 	@Id
-	@Column(length = 11, 
+	@Column(length = 255, 
 			nullable = false, 
 			unique = true, 
 			updatable = false)

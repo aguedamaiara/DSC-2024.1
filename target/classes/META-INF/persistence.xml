@@ -13,8 +13,7 @@
 		<properties>
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.MySQL8Dialect" />
-			<property
-				name="jakarta.persistence.schema-generation.database.action"
+			<property name="jakarta.persistence.schema-generation.database.action" 
 				value="drop-and-create" />
 
 		</properties>
